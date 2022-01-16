@@ -1,0 +1,1087 @@
+{
+	"info": {
+		"_postman_id": "2ec48047-044e-4c78-8b29-cafcf0fcafa3",
+		"name": "AL Custom API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Header and Lines",
+			"item": [
+				{
+					"name": "OData",
+					"item": [
+						{
+							"name": "Count",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers/$count"
+							},
+							"response": []
+						},
+						{
+							"name": "Sort",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers?$orderby=description desc ",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"christianbraeunlich",
+										"custom",
+										"v1.0",
+										"companies({{companyId}})",
+										"headers"
+									],
+									"query": [
+										{
+											"key": "$orderby",
+											"value": "description desc "
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Filter",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers?$filter=description eq '*there*'",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"christianbraeunlich",
+										"custom",
+										"v1.0",
+										"companies({{companyId}})",
+										"headers"
+									],
+									"query": [
+										{
+											"key": "$filter",
+											"value": "description eq '*there*'"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Deep Insert",
+					"item": [
+						{
+							"name": "Line",
+							"item": [
+								{
+									"name": "Get Headers and Lines",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers/?$expand=log",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"christianbraeunlich",
+												"custom",
+												"v1.0",
+												"companies({{companyId}})",
+												"headers",
+												""
+											],
+											"query": [
+												{
+													"key": "$expand",
+													"value": "log"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Header and Lines",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"headerId\", jsonData.id);\r",
+													"\r",
+													"var jsonData = pm.response.json();\r",
+													"var keys = Object.keys(jsonData);\r",
+													"\r",
+													"for(var i = 0; i < keys.length; i++) \r",
+													"{\r",
+													"    if(keys[i].includes('@odata.etag'))\r",
+													"    { \r",
+													"       postman.setEnvironmentVariable(\"header@odata.etag\", jsonData[keys[i]]);\r",
+													"    }\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"description\": \"Hello there\",\r\n    \"lines\": [\r\n        {\r\n            \"name\": \"Smile\"\r\n        },\r\n        {\r\n            \"name\": \"Drink\"\r\n        }\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers?$expand=lines",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"christianbraeunlich",
+												"custom",
+												"v1.0",
+												"companies({{companyId}})",
+												"headers"
+											],
+											"query": [
+												{
+													"key": "$expand",
+													"value": "lines"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Log",
+							"item": [
+								{
+									"name": "Get Headers and Log",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers/?$expand=lines",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"christianbraeunlich",
+												"custom",
+												"v1.0",
+												"companies({{companyId}})",
+												"headers",
+												""
+											],
+											"query": [
+												{
+													"key": "$expand",
+													"value": "lines"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Header and Log (invalid)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"headerId\", jsonData.id);\r",
+													"\r",
+													"var jsonData = pm.response.json();\r",
+													"var keys = Object.keys(jsonData);\r",
+													"\r",
+													"for(var i = 0; i < keys.length; i++) \r",
+													"{\r",
+													"    if(keys[i].includes('@odata.etag'))\r",
+													"    { \r",
+													"       postman.setEnvironmentVariable(\"header@odata.etag\", jsonData[keys[i]]);\r",
+													"    }\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"description\": \"Hello there\",\r\n    \"log\": [\r\n        {\r\n            \"message\": \"What a wonderful world\"\r\n        }\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers?$expand=log",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"christianbraeunlich",
+												"custom",
+												"v1.0",
+												"companies({{companyId}})",
+												"headers"
+											],
+											"query": [
+												{
+													"key": "$expand",
+													"value": "log"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Header and Log (valid)",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var jsonData = JSON.parse(responseBody);\r",
+													"postman.setEnvironmentVariable(\"headerId\", jsonData.id);\r",
+													"\r",
+													"var jsonData = pm.response.json();\r",
+													"var keys = Object.keys(jsonData);\r",
+													"\r",
+													"for(var i = 0; i < keys.length; i++) \r",
+													"{\r",
+													"    if(keys[i].includes('@odata.etag'))\r",
+													"    { \r",
+													"       postman.setEnvironmentVariable(\"header@odata.etag\", jsonData[keys[i]]);\r",
+													"    }\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"description\": \"Hello there\",\r\n    \"log\": {\r\n        \"message\": \"What a wonderful world\"\r\n    }\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers?$expand=log",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"christianbraeunlich",
+												"custom",
+												"v1.0",
+												"companies({{companyId}})",
+												"headers"
+											],
+											"query": [
+												{
+													"key": "$expand",
+													"value": "log"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Get Headers and Expand All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers/?$expand=*",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"christianbraeunlich",
+										"custom",
+										"v1.0",
+										"companies({{companyId}})",
+										"headers",
+										""
+									],
+									"query": [
+										{
+											"key": "$expand",
+											"value": "*"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Query API",
+					"item": [
+						{
+							"name": "Get Headers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/queryHeaders"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Header",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Hello there\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/queryHeaders"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Trigger",
+					"item": [
+						{
+							"name": "Create Header OnInsert",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"postman.setEnvironmentVariable(\"headerId\", jsonData.id);\r",
+											"\r",
+											"var jsonData = pm.response.json();\r",
+											"var keys = Object.keys(jsonData);\r",
+											"\r",
+											"for(var i = 0; i < keys.length; i++) \r",
+											"{\r",
+											"    if(keys[i].includes('@odata.etag'))\r",
+											"    { \r",
+											"       postman.setEnvironmentVariable(\"header@odata.etag\", jsonData[keys[i]]);\r",
+											"    }\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Hello dog. How are you?\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/christianbraeunlich/custom/v2.0/companies({{companyId}})/headers"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Header OnModify",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "If-Match",
+										"value": "{{header@odata.etag}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Hello there\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/christianbraeunlich/custom/v2.0/companies({{companyId}})/headers({{headerId}})"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Headers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Header by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var keys = Object.keys(jsonData);\r",
+									"\r",
+									"for(var i = 0; i < keys.length; i++) \r",
+									"{\r",
+									"    if(keys[i].includes('@odata.etag'))\r",
+									"    { \r",
+									"       postman.setEnvironmentVariable(\"header@odata.etag\", jsonData[keys[i]]);\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers({{headerId}})"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"postman.setEnvironmentVariable(\"headerId\", jsonData.id);\r",
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"var keys = Object.keys(jsonData);\r",
+									"\r",
+									"for(var i = 0; i < keys.length; i++) \r",
+									"{\r",
+									"    if(keys[i].includes('@odata.etag'))\r",
+									"    { \r",
+									"       postman.setEnvironmentVariable(\"header@odata.etag\", jsonData[keys[i]]);\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Hello there\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var keys = Object.keys(jsonData);\r",
+									"\r",
+									"for(var i = 0; i < keys.length; i++) \r",
+									"{\r",
+									"    if(keys[i].includes('@odata.etag'))\r",
+									"    { \r",
+									"       postman.setEnvironmentVariable(\"header@odata.etag\", jsonData[keys[i]]);\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "If-Match",
+								"value": "{{header@odata.etag}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Ahh General Kenobi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers({{headerId}})"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Header - Upload Picture",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "If-Match",
+								"value": "{{header@odata.etag}}",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/C:/Users/christianbraeunlich/Desktop/otter.jpg"
+							},
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers({{headerId}})/data"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Header - Upload Picturea",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers({{headerId}})/data"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Header",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers({{headerId}})"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Webhook",
+			"item": [
+				{
+					"name": "Subscriptions",
+					"item": [
+						{
+							"name": "Get Subscriptions",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/v2.0/subscriptions"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Subscription",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "If-Match",
+										"value": "*",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"notificationUrl\": \"https://webhook.site/69b9d6d7-371d-42c1-b38b-fc6b97f7e141\",\r\n  \"resource\": \"/api/v2.0/companies({{companyId}})/customers\",\r\n  \"clientState\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/v2.0/subscriptions"
+							},
+							"response": []
+						},
+						{
+							"name": "Renew Subscription",
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "If-Match",
+										"value": "*",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"notificationUrl\": \"https://webhook.site/69b9d6d7-371d-42c1-b38b-fc6b97f7e141\",\r\n  \"resource\": \"/api/v2.0/companies({{companyId}})/customers\",\r\n  \"clientState\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/v2.0/subscriptions('020c841-826d-45f9-bd8c-0018652296c4')"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Subscription",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "If-Match",
+										"value": "*",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"notificationUrl\": \"https://webhook.site/69b9d6d7-371d-42c1-b38b-fc6b97f7e141\",\r\n  \"resource\": \"/api/v2.0/companies({{companyId}})/customers\",\r\n  \"clientState\": \"1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/v2.0/subscriptions('9efe4568975147c0908ff0dd8a8db60d')"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get Webhooks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/microsoft/runtime/beta/companies({{companyId}})/webhookSupportedResources?$filter=startswith(resource, 'v2.0')",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"microsoft",
+								"runtime",
+								"beta",
+								"companies({{companyId}})",
+								"webhookSupportedResources"
+							],
+							"query": [
+								{
+									"key": "$filter",
+									"value": "startswith(resource, 'v2.0')"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Unbound",
+			"item": [
+				{
+					"name": "Read",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://bcserver-default:7048/BC/ODataV4/Unbound_Ping"
+					},
+					"response": []
+				},
+				{
+					"name": "Write",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"input\": \"hello world!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://bcserver-default:7048/BC/ODataV4/Unbound_Capitalize"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Header",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Hello there\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://bcserver-default:7048/BC/ODataV4/Unbound_CreateHeader?company={{companyId}}",
+							"protocol": "http",
+							"host": [
+								"bcserver-default"
+							],
+							"port": "7048",
+							"path": [
+								"BC",
+								"ODataV4",
+								"Unbound_CreateHeader"
+							],
+							"query": [
+								{
+									"key": "company",
+									"value": "{{companyId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bound",
+			"item": [
+				{
+					"name": "Bound",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/ODataV4/Company('CRONUS%20International%20Ltd.')/Bound"
+					},
+					"response": []
+				},
+				{
+					"name": "Bound by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{url}}/ODataV4/Company('CRONUS%20International%20Ltd.')/Bound(1)"
+					},
+					"response": []
+				},
+				{
+					"name": "Bound Action",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{url}}/ODataV4/Company('CRONUS%20International%20Ltd.')/Bound(1)/NAV.ClearDescription"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "APIs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"username": "{{user}}",
+						"password": "{{password}}",
+						"showPassword": false
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{url}}/api/v2.0"
+			},
+			"response": []
+		},
+		{
+			"name": "companies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"pm.environment.set(\"companyId\", jsonData.value[0].id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"username": "{{user}}",
+						"password": "{{password}}",
+						"saveHelperData": true,
+						"showPassword": false
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{url}}/api/v2.0/companies"
+			},
+			"response": []
+		},
+		{
+			"name": "ODataV4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": {
+						"username": "{{user}}",
+						"password": "{{password}}",
+						"showPassword": false
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{url}}/ODataV4?$metadata",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"ODataV4"
+					],
+					"query": [
+						{
+							"key": "$metadata",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": {
+			"password": "1234",
+			"username": "admin"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
