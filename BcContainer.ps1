@@ -8,5 +8,6 @@ New-BcContainer `
     -artifactUrl (Get-BCArtifactUrl -type Sandbox -version 20.0.37253.39558) `
     -auth NavUserPassword `
     -Credential $credential `
+    -shortcuts None `
     -updateHosts `
     -isolation hyperv
