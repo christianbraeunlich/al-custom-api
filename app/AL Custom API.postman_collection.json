@@ -79,6 +79,100 @@
 					]
 				},
 				{
+					"name": "Query API",
+					"item": [
+						{
+							"name": "Get Headers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/queryHeaders"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Header",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Hello there\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/queryHeaders"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Blob",
+					"item": [
+						{
+							"name": "Get Blob",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers({{headerId}})/data"
+							},
+							"response": []
+						},
+						{
+							"name": "Upload Blob",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "If-Match",
+										"value": "{{header@odata.etag}}",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "/C:/Users/christianbraeunlich/Desktop/PAT.txt"
+									},
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers({{headerId}})/data"
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "Deep Insert",
 					"item": [
 						{
@@ -90,7 +184,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers/?$expand=log",
+											"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers/?$expand=lines",
 											"host": [
 												"{{url}}"
 											],
@@ -106,7 +200,7 @@
 											"query": [
 												{
 													"key": "$expand",
-													"value": "log"
+													"value": "lines"
 												}
 											]
 										}
@@ -120,19 +214,7 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"var jsonData = JSON.parse(responseBody);\r",
-													"postman.setEnvironmentVariable(\"headerId\", jsonData.id);\r",
-													"\r",
-													"var jsonData = pm.response.json();\r",
-													"var keys = Object.keys(jsonData);\r",
-													"\r",
-													"for(var i = 0; i < keys.length; i++) \r",
-													"{\r",
-													"    if(keys[i].includes('@odata.etag'))\r",
-													"    { \r",
-													"       postman.setEnvironmentVariable(\"header@odata.etag\", jsonData[keys[i]]);\r",
-													"    }\r",
-													"}"
+													""
 												],
 												"type": "text/javascript"
 											}
@@ -184,7 +266,7 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers/?$expand=lines",
+											"raw": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers/?$expand=log",
 											"host": [
 												"{{url}}"
 											],
@@ -200,7 +282,7 @@
 											"query": [
 												{
 													"key": "$expand",
-													"value": "lines"
+													"value": "log"
 												}
 											]
 										}
@@ -355,38 +437,6 @@
 										}
 									]
 								}
-							},
-							"response": []
-						}
-					]
-				},
-				{
-					"name": "Query API",
-					"item": [
-						{
-							"name": "Get Headers",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/queryHeaders"
-							},
-							"response": []
-						},
-						{
-							"name": "Create Header",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"description\": \"Hello there\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/queryHeaders"
 							},
 							"response": []
 						}
@@ -593,63 +643,6 @@
 							}
 						},
 						"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers({{headerId}})"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Header - Upload Picture",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "If-Match",
-								"value": "{{header@odata.etag}}",
-								"type": "default"
-							}
-						],
-						"body": {
-							"mode": "file",
-							"file": {
-								"src": "/C:/Users/christianbraeunlich/Desktop/otter.jpg"
-							},
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers({{headerId}})/data"
-					},
-					"response": []
-				},
-				{
-					"name": "Update Header - Upload Picturea",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": "{{url}}/api/christianbraeunlich/custom/v1.0/companies({{companyId}})/headers({{headerId}})/data"
 					},
 					"response": []
 				},
@@ -894,7 +887,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									""
+									"const jsonData = pm.response.json();\r",
+									"pm.environment.set(\"boundNumber\", jsonData.value[0].number);"
 								],
 								"type": "text/javascript"
 							}
@@ -923,7 +917,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "{{url}}/ODataV4/Company('CRONUS%20International%20Ltd.')/Bound(1)"
+						"url": "{{url}}/ODataV4/Company('CRONUS%20International%20Ltd.')/Bound({{boundNumber}})"
 					},
 					"response": []
 				},
@@ -943,7 +937,7 @@
 					"request": {
 						"method": "POST",
 						"header": [],
-						"url": "{{url}}/ODataV4/Company('CRONUS%20International%20Ltd.')/Bound(1)/NAV.ClearDescription"
+						"url": "{{url}}/ODataV4/Company('CRONUS%20International%20Ltd.')/Bound({{boundNumber}})/NAV.ClearDescription"
 					},
 					"response": []
 				}
